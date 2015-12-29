@@ -9,10 +9,6 @@ ThinkGear Connect 4.1.8.
 appName need to be sent to the server. Instead the config should be sent right after the connection is made. If you are
 using an older version of Neurosky's ThinkGear Connect application, this library might not work for you.*
 
-You'll need one of [these](http://store.neurosky.com/products/mindwave-1):
-
-![Fashion!](http://home.neurosky.com/wp-content/uploads/2014/01/EEG_Hardware_Section3-1.jpg)
-
 ## Usage
 
 Install with NPM:
