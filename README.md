@@ -5,10 +5,6 @@ Client library for the [ThinkGear Socket Protocol](http://developer.neurosky.com
 This library is based on [`node-neurosky`](https://github.com/dluxemburg/node-neurosky), but updated to work with
 ThinkGear Connect 4.1.8.
 
-*Note: It seems that Neurosky has changed the protocol from their documentation. The change is that no appKey or
-appName need to be sent to the server. Instead the config should be sent right after the connection is made. If you are
-using an older version of Neurosky's ThinkGear Connect application, this library might not work for you.*
-
 ## Usage
 
 Install with NPM:
