@@ -1,36 +1,42 @@
-#node-neurosky
+# node-thinkgear-sockets
 
 Client library for the [ThinkGear Socket Protocol](http://developer.neurosky.com/docs/lib/exe/fetch.php?media=app_notes:thinkgear_socket_protocol.pdf) from [NeuroSky](http://neurosky.com/).
 
-###You'll need one of [these](http://store.neurosky.com/products/mindwave-1):
+This library is based on [`node-neurosky`](https://github.com/dluxemburg/node-neurosky), but updated to work with
+ThinkGear Connect 4.1.8.
+
+*Note: It seems that Neurosky has changed the protocol from their documentation. The change is that no appKey or
+appName need to be sent to the server. Instead the config should be sent right after the connection is made. If you are
+using an older version of Neurosky's ThinkGear Connect application, this library might not work for you.*
+
+You'll need one of [these](http://store.neurosky.com/products/mindwave-1):
 
 ![Fashion!](http://home.neurosky.com/wp-content/uploads/2014/01/EEG_Hardware_Section3-1.jpg)
 
-###Usage
+## Usage
 
 Install with NPM:
 
 ```
-$ npm install node-neurosky
+$ npm install node-thinkgear-sockets
 ```
 
 
 Include the module:
 
 ```javascript
-var neurosky = require('node-neurosky');
+var thinkgear = require('node-thinkgear-sockets');
 ```
 
 Create a client instance:
 
 ```javascript
-var client = neurosky.createClient({
-	appName: 'My Great Application',
-	appKey: '1234567890abcdef...'
-});
+var client = thinkgear.createClient({ enableRawOutput: true });
 ```
 
-Add a listener for incoming data:
+### Data Events
+
+Clients fire three types of data events: `blink_data`, `raw_data`, `data`. You can add a listener like this:
 
 ```javascript
 client.on('data',function(data){
@@ -40,7 +46,9 @@ client.on('data',function(data){
 });
 ```
 
-Connect to the headset:
+### Connect to the headset
+
+Connect to the headset like this:
 
 ```javascript
 client.connect();
@@ -48,9 +56,20 @@ client.connect();
 
 All of this is in the `example/app.js` file too.
 
-###Data
+### Troubleshooting
+Make sure that your headset is paired and connected before you start the Node app. It may take 5-10 seconds for data to
+start streaming to your Node app after you make the connection.
 
-The output objects look like this:
+The ThinkGear Connector app will multiplex connections to the headset, so if you are unsure if your connection is
+working correctly, you can use the included "Brainwave Visualizer App" while your Node app is running. If data is
+streaming correctly to the Brainwave Visualizer, then it should be streaming correctly to your Node app as well.
+
+
+## Data
+
+### `data` events
+
+The output of `data` events looks like this:
 
 ```javascript
 {
@@ -72,11 +91,19 @@ The output objects look like this:
 }
 ```
 
-With the occasional `{ blinkStrength: 55 }` when you blink.
+### `blink_data` events
 
-###TO DO
+Example: `{ blinkStrength: 55 }`
 
-- Some tests
-- A more thorough example
-- Deal with raw output
-- Make different types of device signal emit different events
+### `raw_data` events
+
+Example: `{ rawEeg: 43 }`
+
+Note that `raw_data` events stream at a rate of about 500 per second, so make sure your event handlers are relatively
+quick!
+
+### TODO
+
+- Tests
+- Use Node Streams for raw data to add some buffering
+
